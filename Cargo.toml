@@ -1,0 +1,16 @@
+[package]
+name = "code_formatter"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = "3.1"
+walkdir = "2.3"
+tokio = { version = "1", features = ["full"] }
+
+
+[dev-dependencies]
+tokio-test = "0.4.4"
+tempfile = "3.3.0"
