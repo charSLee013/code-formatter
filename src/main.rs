@@ -45,6 +45,8 @@ async fn main() {
     let include_tests = matches.is_present("with-test");
     let root_path = matches.value_of("path").unwrap_or("."); // This captures the path from the CLI
 
+    println!("Here is the program code in {}. Please understand the program and provide a brief explanation of the role and relationship between each component.", language);
+
     // Use the path provided by the user
     let paths = file_walker::walk_directory(Path::new(root_path), include_tests, language);
     for entry in paths {
