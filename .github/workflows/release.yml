@@ -75,15 +75,14 @@ jobs:
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             BINARY_NAME="$BINARY_NAME.exe"
           fi
-          cargo build --release --target ${{ matrix.target }} --bin code_formatter -- -C link-arg=-Wl,-soname,$BINARY_NAME
-          mv "./target/${{ matrix.target }}/release/code_formatter" "./target/${{ matrix.target }}/release/$BINARY_NAME"
+          cargo build --release --target ${{ matrix.target }} --bin $BINARY_NAME 
         working-directory: ${{ github.workspace }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.target-name }}
-          path: target/${{ matrix.target }}/release/code_formatter-${{ matrix.target-name }}${{ endsWith(matrix.os, 'windows-latest') && '.exe' || '' }}
+          path: $BINARY_NAME 
 
 
   release:
