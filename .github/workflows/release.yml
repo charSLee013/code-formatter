@@ -62,28 +62,27 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-
       - name: Configure cargo for AArch64
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
           echo "[target.aarch64-unknown-linux-gnu]" >> $HOME/.cargo/config
           echo "linker = 'aarch64-linux-gnu-gcc'" >> $HOME/.cargo/config
-
       - name: Build binary
-        run: |
+        run: | 
           BINARY_NAME="code_formatter-${{ matrix.target-name }}"
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
             BINARY_NAME="$BINARY_NAME.exe"
           fi
-          cargo build --release --target ${{ matrix.target }} --bin $BINARY_NAME 
+          cargo build --release --target ${{ matrix.target }}
+          mv ./target/release/${{ matrix.target-name }}/code_formatter ./$BINARY_NAME
+
         working-directory: ${{ github.workspace }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.target-name }}
-          path: $BINARY_NAME 
-
+          path: target/release/code_formatter
 
   release:
     needs: build
@@ -112,5 +111,4 @@ jobs:
           asset_path: ./code_formatter-${{ matrix.target-name }}${{ endsWith(matrix.os, 'windows-latest') && '.exe' || '' }}
           asset_name: code_formatter-${{ matrix.target-name }}${{ endsWith(matrix.os, 'windows-latest') && '.exe' || '' }}
           asset_content_type: application/octet-stream
-
 
