@@ -73,8 +73,8 @@ jobs:
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
             BINARY_NAME="$BINARY_NAME.exe"
           fi
-          cargo build --release --target ${{ matrix.target }}
-          mv ./target/release/code_formatter ./$BINARY_NAME
+          cargo build --release --target ${{ matrix.target }} --out-dir output -Z unstable-options
+          mv ./output/code_formatter ./$BINARY_NAME
 
         working-directory: ${{ github.workspace }}
 
