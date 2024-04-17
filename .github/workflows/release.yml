@@ -74,7 +74,7 @@ jobs:
             BINARY_NAME="$BINARY_NAME.exe"
           fi
           cargo build --release --target ${{ matrix.target }}
-          mv ./target/release/${{ matrix.target-name }}/code_formatter ./$BINARY_NAME
+          mv ./target/release/code_formatter ./$BINARY_NAME
 
         working-directory: ${{ github.workspace }}
 
