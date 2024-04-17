@@ -57,6 +57,18 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Set up cross-compilation for AArch64
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+      - name: Configure cargo for AArch64
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          echo "[target.aarch64-unknown-linux-gnu]" >> $HOME/.cargo/config
+          echo "linker = 'aarch64-linux-gnu-gcc'" >> $HOME/.cargo/config
+
       - name: Build binary
         run: cargo build --release --target ${{ matrix.target }}
         working-directory: ${{ github.workspace }}
