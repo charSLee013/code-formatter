@@ -86,7 +86,7 @@ jobs:
         if: matrix.os == 'windows-latest'
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: code_formatter-${{ matrix.target-name }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
           path: |
