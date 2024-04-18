@@ -68,15 +68,22 @@ jobs:
           echo "[target.aarch64-unknown-linux-gnu]" >> $HOME/.cargo/config
           echo "linker = 'aarch64-linux-gnu-gcc'" >> $HOME/.cargo/config
       - name: Build binary
+        shell: bash
         run: | 
           BINARY_NAME="code_formatter-${{ matrix.target-name }}"
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            BINARY_NAME="$BINARY_NAME.exe"
-          fi
           cargo build --release --target ${{ matrix.target }} --out-dir output -Z unstable-options
           mv ./output/code_formatter ./$BINARY_NAME
-
         working-directory: ${{ github.workspace }}
+        if: matrix.os != 'windows-latest'
+
+      - name: Build binary (Windows)
+        shell: powershell
+        run: |
+          $BINARY_NAME="code_formatter-${{ matrix.target-name }}.exe"
+          cargo build --release --target ${{ matrix.target }} --out-dir output -Z unstable-options
+          Move-Item ./output/code_formatter.exe ./$BINARY_NAME
+        working-directory: ${{ github.workspace }}
+        if: matrix.os == 'windows-latest'
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
