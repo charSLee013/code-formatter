@@ -90,7 +90,7 @@ jobs:
         with:
           name: ${{ matrix.os }}-binary
           path: |
-            ${{ github.workspace }}/${{ matrix.target-name }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+            ${{ github.workspace }}/code_formatter-${{ matrix.target-name }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
 
   release:
     needs: build
